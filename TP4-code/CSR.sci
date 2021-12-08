@@ -4,7 +4,6 @@ m = size(A,1);
 AA = list();
 JA = list();
 IA = list(1);
-nb_elem = 0;
 
 for i = 1:m
     nb_elem = 0;
