@@ -1,16 +1,10 @@
-function [v]= my_sparse_matvect(AA,JA,IA,n,m,nnz_,v)
+function [r]= my_sparse_matvect(AA,JA,IA,n,m,nnz_,v)
 cpt = 1;
-
-for i = 1:n;
-    vi = v(i);
-    disp(IA(i));
-    disp(IA(i+1));
-    disp("-----------");
+r = zeros(m,1);
+for i = 1:m;
     for j = 1:IA(i+1)-IA(i)
-        v(i) = v(i) + AA(cpt) * vi;
-        disp(cpt);
+        r(i) = r(i) + AA(cpt) * v(j);
         cpt = cpt + 1; 
     end
-    disp("-----------");
 end
 endfunction
