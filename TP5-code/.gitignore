@@ -1,5 +1,3 @@
 *.o
-tp2poisson1D_direct
-tp2poisson1D_iter
-tp_testenv
+bin/*
 *.dat
