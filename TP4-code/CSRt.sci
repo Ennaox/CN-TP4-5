@@ -1,9 +1,11 @@
-function [AAt,JAt,IAt,n,m,nnz_]=myCSRt(AA,JA,IA,n,m,nnz_)
+function [AAt,JAt,IAt,colt,lit,nnz_]=myCSRt(AA,JA,IA,col,li,nnz_)
 AAt = list();
 JAt = list();
 IAt = list(1);
 l = 0;
-for i = 1:n
+colt = li;
+lit = col;
+for i = 1:li
     cpt = 0;
     for  j = 1:length(AA)
         if JA(j) == i

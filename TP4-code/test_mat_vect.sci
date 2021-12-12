@@ -1,13 +1,22 @@
 exec CSR.sci
 exec mat_vect.sci
 
-ROW = 5;
-COL = 7;
+NB_REP = 10;
+MAX_SIZE = 505;
 FILL = 0.35;
-A = sprand(ROW,COL,FILL);
-A = full(A);
-v = ones(COL,1);
-disp(A*v)
-[AA,JA,IA,n,m,nnz_] = myCSR(A);
-v = my_sparse_matvect(AA,JA,IA,n,m,nnz_,v);
-disp(v);
+[fic, mod] = mopen("data/mat_vect.dat", "w");
+
+for SIZE=5:10:MAX_SIZE
+    error_ = 0;
+    disp(string(SIZE)+"/"+string(MAX_SIZE));
+    for REP=1:NB_REP
+        A = sprand(SIZE,SIZE,FILL);
+        A = full(A);
+        v = ones(SIZE,1);
+        [AA,JA,IA,li,col,nnz_] = myCSR(A);
+        r = my_sparse_matvect(AA,JA,IA,li,col,nnz_,v);
+        error_ = error_ + norm(r - (A*v));
+    end
+    mfprintf(fic,"%.17lf %d\n",error_/NB_REP, SIZE);
+end
+mclose(fic);
