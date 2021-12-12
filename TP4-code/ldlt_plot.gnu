@@ -12,6 +12,9 @@ plot "data/LDLT.dat" using 6:5 t "my_LU3b" w lp, "data/LDLT.dat" using 6:4 t "my
 
 unset logscale y
 
+set output "image/LDLT_solo_time.png"
+plot "data/LDLT.dat" using 6:2 t "LDLT" w lp;
+
 set output "image/LDLT_err.png"
 set ylabel "Erreur"
 
