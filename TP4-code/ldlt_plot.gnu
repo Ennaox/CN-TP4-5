@@ -15,4 +15,4 @@ unset logscale y
 set output "image/LDLT_err.png"
 set ylabel "Erreur"
 
-plot "data/LDLT.dat" using 6:1 t "my_LU3b" w lp;
+plot "data/LDLT.dat" using 6:1 t "LDLT" w lp;
