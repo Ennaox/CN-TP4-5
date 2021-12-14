@@ -4,6 +4,13 @@
 /* to solve the Poisson 1D problem        */
 /******************************************/
 #include "lib_poisson1D.h"
+
+void print_GB(int size, double * AB)
+{
+  for(int i = 0; i<size; i++)
+    printf("%lf %d\n",AB[i],i);
+}
+
 int main(int argc,char *argv[])
 /* ** argc: Number of arguments */
 /* ** argv: Values of arguments */
@@ -55,18 +62,15 @@ int main(int argc,char *argv[])
   int row = 1; //
 
   if (row == 1){ // LAPACK_ROW_MAJOR
-    set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
-    //write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
-    for(int i = 0; i<lab*la;i++)
-      printf("%lf %d\n",AB[i],i);
+    set_GB_operator_rowMajor_poisson1D(AB, &lab, &la,&kv);
+    write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
+    print_GB(lab*la,AB);
     info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
-  
   }
   else { // LAPACK_COL_MAJOR
     set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
-    //write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
-    for(int i = 0; i<lab*la;i++)
-      printf("%lf %d\n",AB[i],i);
+    write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
+    print_GB(lab*la,AB);
     info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
   }    
 

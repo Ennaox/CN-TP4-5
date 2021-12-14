@@ -5,16 +5,22 @@
 /**********************************************/
 #include "lib_poisson1D.h"
 
-void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la)
+void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la, int *kv)
 {
+
+  //Réservation de la première partie de la matrice pour garder un espace de travail pour le pivot lorque nécéssaire
+  for(int i =0 ; i<(*kv)*(*la);i++)
+  {
+      AB[i]=0;
+  }
+
   for(int i = 0; i<(*la);i++)
   {
-        AB[i] = -1;
-        AB[i +(*la)] = 2;
-        AB[i + 2 * (*la)] = -1;
+        AB[(*kv)*(*la)+i] = -1;
+        AB[(*kv)*(*la)+1*(*la)+i] = 2;
+        AB[(*kv)*(*la)+2*(*la)+i] = -1;
   }
-  AB[0] = 0;
-  AB[(*la)*(*lab)-1] = 0;
+  AB[(*lab)*(*la)-1] = 0;
 }
 
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv)
@@ -95,7 +101,7 @@ void write_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int* la, char* f
   if (file != NULL){
     for (ii=0;ii<(*lab);ii++){
       for (jj=0;jj<(*la);jj++){
-	fprintf(file,"%lf\t",AB[ii*(*la)+jj]);
+	       fprintf(file,"%lf\t",AB[ii*(*la)+jj]);
       }
       fprintf(file,"\n");
     }
@@ -107,7 +113,24 @@ void write_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int* la, char* f
 }
 
 void write_GB_operator_colMajor_poisson1D(double* AB, int* lab, int* la, char* filename){
-  //TODO
+    FILE * file;
+  int ii,jj;
+  file = fopen(filename, "w");
+
+  if (file != NULL){
+    for (ii=0;ii<(*la);ii++)
+    {
+      for (jj=0;jj<(*lab);jj++)
+      {
+        fprintf(file,"%lf\t",AB[ii*(*lab)+jj]);
+      }
+      fprintf(file,"\n");
+    }
+    fclose(file);
+  }
+  else{
+    perror(filename);
+  }
 }
 
 void write_vec(double* vec, int* la, char* filename){
