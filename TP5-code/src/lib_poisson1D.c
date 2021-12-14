@@ -20,7 +20,9 @@ void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la, int *kv)
         AB[(*kv)*(*la)+1*(*la)+i] = 2;
         AB[(*kv)*(*la)+2*(*la)+i] = -1;
   }
-  AB[(*lab)*(*la)-1] = 0;
+
+  AB[(*kv)*(*la)] = 0;
+  AB[(*lab)*(*la)] = 0;
 }
 
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv)
