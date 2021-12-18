@@ -3,7 +3,7 @@ cpt = 1;
 r = zeros(col,1);
 for i = 1:col;
     for j = 1:IA(i+1)-IA(i)
-        r(i) = r(i) + AA(cpt) * v(j);
+        r(i) = r(i) + AA(cpt) * v(JA(cpt));
         cpt = cpt + 1; 
     end
 end
