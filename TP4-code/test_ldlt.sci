@@ -2,11 +2,11 @@ exec LDLT.sci
 exec mylu3b.sci
 exec mylu1b.sci
 
-TAILLE_MAX = 300;
-NB_REP = 5;
+TAILLE_MAX = 400;
+NB_REP = 4;
 
 [fic, mod] = mopen("data/LDLT.dat", "w");
-for taille = 10:10:TAILLE_MAX
+for taille = 10:20:TAILLE_MAX
     dif = 0;
     disp(string(taille)+"/"+string(TAILLE_MAX));
     time_ldlt = 0;
