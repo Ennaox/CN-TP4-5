@@ -5,6 +5,12 @@
 /**********************************************/
 #include "lib_poisson1D.h"
 
+void print_GB(int size, double * AB)
+{
+  for(int i = 0; i<size; i++)
+    printf("%.16lf %d\n",AB[i],i);
+}
+
 void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la, int *kv)
 {
 

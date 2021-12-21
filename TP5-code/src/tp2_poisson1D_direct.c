@@ -5,22 +5,6 @@
 /******************************************/
 #include "lib_poisson1D.h"
 
-void print_GB(int size, double * AB)
-{
-  for(int i = 0; i<size; i++)
-    printf("%.16lf %d\n",AB[i],i);
-}
-
-int comp_vect(double *A, double *B,int size)
-{
-  for(int i =0; i<size;i++)
-  {
-    if(A[i]!=B[i])
-      return 0;
-  }
-  return 1;
-}
-
 int main(int argc,char *argv[])
 /* ** argc: Number of arguments */
 /* ** argv: Values of arguments */
@@ -71,12 +55,11 @@ int main(int argc,char *argv[])
   /* working array for pivot used by LU Factorization */
   ipiv = (int *) calloc(la, sizeof(int));
 
-  int row = 0; //
+  int row = 1; //
   double alpha = 1;
   double beta = -1;
   int incx = 1;
   int incy = 1;
-  double * Y = malloc(la*sizeof(double));
 
   if (row == 1){ // LAPACK_ROW_MAJOR
     //Calcul de la solution de A * x = B pour une matrice poisson 1D en format GB Row Major
