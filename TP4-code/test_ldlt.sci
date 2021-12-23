@@ -2,8 +2,8 @@ exec LDLT.sci
 exec mylu3b.sci
 exec mylu1b.sci
 
-TAILLE_MAX = 400;
-NB_REP = 4;
+TAILLE_MAX = 410;
+NB_REP = 10;
 
 [fic, mod] = mopen("data/LDLT.dat", "w");
 for taille = 10:20:TAILLE_MAX
@@ -41,7 +41,7 @@ for taille = 10:20:TAILLE_MAX
             realD(i,i) = D(i);
         end 
         newA = (L*realD*L');
-        dif = dif + norm(Abis - newA);
+        dif = dif + norm(Abis - newA)/norm(Abis);
         
     end
     mfprintf(fic,"%.17lf %.14lf %.14lf %.14lf %.14lf %d\n",dif/NB_REP,time_ldlt/NB_REP,time_lu/NB_REP,time_lu1b/NB_REP,time_lu3b/NB_REP,taille);
