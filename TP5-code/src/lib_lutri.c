@@ -23,6 +23,29 @@ void print_full(double **R, int la)
 	}
 }
 
+
+
+double *my_GB_tri_unfacto_lu(double *A, int la,int lab)
+{
+	double *B = malloc(la*lab*sizeof(double));
+	for(int i = 0; i<la*lab;i++)
+	{
+		B[i] = 0;
+	}
+	
+	for(int i = 0; i<la;i++)
+	{
+		B[i] = A[i];
+		B[la+i] = A[la+i] + A[i] * A[2*la+i-1];
+		B[2*la + i] = A[2*la+i]*A[la+i];
+	}
+	B[0] = 0;
+	B[3*la] = 0;
+	B[la] = A[la];
+	free(A);
+	return B;
+}
+
 void my_GB_tri_facto_lu(double * A, int la)
 {
 	for(int i = 0; i<la-1;i++)

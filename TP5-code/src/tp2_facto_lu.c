@@ -29,30 +29,26 @@ int main()
   	double *RHS=(double *) malloc(sizeof(double)*la);
   	double *x = malloc(sizeof(double)*la);
 
+  	double *poisson1D = malloc(la*lab*sizeof(double));
+  	set_GB_operator_rowMajor_poisson1D(poisson1D,&lab,&la,&kv);
+
   	set_dense_RHS_DBC_1D(RHS,&la,&T0,&T1);
 
   	double * A = malloc(sizeof(double)*lab*la);
 	set_GB_operator_rowMajor_poisson1D(A, &lab, &la,&kv);
-
-	double **AF = malloc(la*sizeof(double *));
-
+	
 	my_GB_tri_LU(la,la,A,x,RHS);
-
-	write_vec(RHS, &la, "LU.dat");
+	A = my_GB_tri_unfacto_lu(A,la,lab);
 
 	//Calcul de l'erreur
-	print_GB(la,EX_SOL);
-	printf("\n");
-	print_GB(la,RHS);
-
 	double temp, relres;
-	temp = cblas_ddot(la, RHS, 1, RHS,1);
+	temp = cblas_ddot(la, A, 1, A,1);
   	temp = sqrt(temp);
-  	cblas_daxpy(la, -1.0, RHS, 1, EX_SOL, 1);
-  	relres = cblas_ddot(la, EX_SOL, 1, EX_SOL,1);
+  	cblas_daxpy(la, -1.0, A, 1, poisson1D, 1);
+  	relres = cblas_ddot(la, poisson1D, 1, poisson1D,1);
   	relres = sqrt(relres);
   	relres = relres / temp;
-  	printf("\nThe relative residual error is relres = %e\n",relres);
+  	printf("The relative residual error is relres = %e\n",relres);
 
 
   	free(EX_SOL);
@@ -60,5 +56,6 @@ int main()
   	free(RHS);
   	free(x);
   	free(A);
+  	free(poisson1D);
 	return 0;
 }
