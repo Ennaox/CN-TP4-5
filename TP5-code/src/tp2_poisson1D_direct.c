@@ -55,7 +55,7 @@ int main(int argc,char *argv[])
   /* working array for pivot used by LU Factorization */
   ipiv = (int *) calloc(la, sizeof(int));
 
-  int row = 1; //
+  int row = 0; //
   double alpha = 1;
   double beta = -1;
   int incx = 1;
@@ -65,7 +65,6 @@ int main(int argc,char *argv[])
     //Calcul de la solution de A * x = B pour une matrice poisson 1D en format GB Row Major
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la,&kv);
     write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
-    print_GB(lab*la,AB);
     
     info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
     
@@ -78,15 +77,16 @@ int main(int argc,char *argv[])
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la,&kv);
 
     cblas_dgbmv(CblasRowMajor,CblasNoTrans,la,la,kl,ku,alpha,AB,lab,EX_SOL,incx,beta,RHS_cpy,incy);
-    printf("\n");
-    print_GB(la,RHS_cpy);
+    temp = cblas_ddot(la, RHS_cpy, 1, RHS_cpy,1);
+    temp = sqrt(temp);
+    printf("Error for dgbmv: %e\n",temp);
+
 
   }
   else { // LAPACK_COL_MAJOR
     //Calcul de la solution de A * x = B pour une matrice poisson 1D en format GB Col Major
     set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
     write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
-    print_GB(lab*la,AB);
 
     info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
 
@@ -107,8 +107,9 @@ int main(int argc,char *argv[])
     set_GB_operator_colMajor_poisson1D(AB, &lab, &la,&kv);
 
     cblas_dgbmv(CblasColMajor,CblasNoTrans,la,la,kl,ku,alpha,AB,lab,EX_SOL,incx,beta,RHS_cpy,incy);
-    printf("\n");
-    print_GB(la,RHS_cpy);
+    temp = cblas_ddot(la, RHS_cpy, 1, RHS_cpy,1);
+    temp = sqrt(temp);
+    printf("Error for dgbmv: %e\n",temp);
   }    
 
   
@@ -124,7 +125,7 @@ int main(int argc,char *argv[])
   relres = sqrt(relres);
   relres = relres / temp;
   
-  printf("\nThe relative residual error is relres = %e\n",relres);
+  printf("\nThe relative residual error for dgbsv is relres = %e\n",relres);
 
   free(RHS);
   free(EX_SOL);
