@@ -26,14 +26,14 @@ function [x,iter,err]=jacobi(A,b,e,maxiter)
     
     iter = 0;
     
-    residual = norm(b - A * x);
+    residual = norm(b - A * x)/norm(b);
     err($+1) = residual;
     while residual > e && iter < maxiter do
         
         x = x + invD * (b - A * x)
         
         iter = iter + 1;
-        residual = norm((b - A * x));
+        residual = norm((b - A * x))/norm(b);
         err($+1) = residual;
     end
 endfunction
@@ -42,7 +42,7 @@ endfunction
 
 [x,iter,err] = jacobi(A,b,1e-10,100000);
 
-disp(norm(A\b - x)/norm(A));
+disp(err(length(err)));
 
 [fic, mod] = mopen("../jacobi.dat", "w");
 for i = 1:length(err)

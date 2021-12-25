@@ -55,7 +55,7 @@ int main(int argc,char *argv[])
   /* working array for pivot used by LU Factorization */
   ipiv = (int *) calloc(la, sizeof(int));
 
-  int row = 0; //
+  int row = 1; //
   double alpha = 1;
   double beta = -1;
   int incx = 1;
@@ -76,10 +76,10 @@ int main(int argc,char *argv[])
     AB = (double *) malloc(sizeof(double)*lab*la);
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la,&kv);
 
-    cblas_dgbmv(CblasRowMajor,CblasNoTrans,la,la,kl,ku,alpha,AB,lab,EX_SOL,incx,beta,RHS_cpy,incy);
+    cblas_dgbmv(CblasRowMajor,CblasNoTrans,la,la,kl,ku,alpha,AB,la,EX_SOL,incx,beta,RHS_cpy,incy);
     temp = cblas_ddot(la, RHS_cpy, 1, RHS_cpy,1);
     temp = sqrt(temp);
-    printf("Error for dgbmv: %e\n",temp);
+    printf("Error for dgbmv RowMajor: %e\n",temp);
 
 
   }
@@ -109,7 +109,7 @@ int main(int argc,char *argv[])
     cblas_dgbmv(CblasColMajor,CblasNoTrans,la,la,kl,ku,alpha,AB,lab,EX_SOL,incx,beta,RHS_cpy,incy);
     temp = cblas_ddot(la, RHS_cpy, 1, RHS_cpy,1);
     temp = sqrt(temp);
-    printf("Error for dgbmv: %e\n",temp);
+    printf("Error for dgbmv ColMajor: %e\n",temp);
   }    
 
   

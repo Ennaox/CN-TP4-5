@@ -41,15 +41,15 @@ int main()
 	A = my_GB_tri_unfacto_lu(A,la,lab);
 
 	//Calcul de l'erreur
+	
 	double temp, relres;
-	temp = cblas_ddot(la, A, 1, A,1);
+	temp = cblas_ddot(la, poisson1D, 1, poisson1D,1);
   	temp = sqrt(temp);
   	cblas_daxpy(la, -1.0, A, 1, poisson1D, 1);
   	relres = cblas_ddot(la, poisson1D, 1, poisson1D,1);
   	relres = sqrt(relres);
   	relres = relres / temp;
-  	printf("The relative residual error is relres = %e\n",relres);
-
+  	printf("The relative residual error for LU factorization is = %e\n",relres);
 
   	free(EX_SOL);
   	free(X);

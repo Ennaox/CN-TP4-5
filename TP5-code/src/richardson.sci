@@ -23,14 +23,14 @@ function [x,iter,err]=richardson(A,b,e,maxiter,alpha)
     
     iter = 0;
     
-    residual = norm(b - A * x);
+    residual = norm(b - A * x)/norm(b);
     err($+1) = residual;
     while residual > e && iter < maxiter do
         
         x = x + alpha * (b - A * x)
         
         iter = iter + 1;
-        residual = norm((b - A * x));
+        residual = norm((b - A * x))/norm(b);
         err($+1) = residual;
     end
 endfunction
@@ -40,19 +40,19 @@ iter_max = 50000;
 [A,b] = gen_poisson1D(100,-5,5);
 
 [x,iter,err] = richardson(A,b,1e-10,iter_max,1/2);
-disp(norm(A\b - x)/norm(A));
+disp(err(length(err)));
 
 [x,iter,err2] = richardson(A,b,1e-10,iter_max,1/3);
-disp(norm(A\b - x)/norm(A));
+disp(err2(length(err2)));
 
 [x,iter,err3] = richardson(A,b,1e-10,iter_max,1/4);
-disp(norm(A\b - x)/norm(A));
+disp(err3(length(err3)));
 
 [x,iter,err4] = richardson(A,b,1e-10,iter_max,1/5);
-disp(norm(A\b - x)/norm(A));
+disp(err4(length(err4)));
 
 [x,iter,err5] = richardson(A,b,1e-10,iter_max,1/6);
-disp(norm(A\b - x)/norm(A));
+disp(err5(length(err5)));
 
 [fic, mod] = mopen("../richardson1_2.dat", "w");
 [fic2, mod] = mopen("../richardson1_3.dat", "w");
